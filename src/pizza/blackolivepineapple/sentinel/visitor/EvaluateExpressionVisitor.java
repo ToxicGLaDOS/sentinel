@@ -1,6 +1,6 @@
-package pizza.blackolivepineapple.calculator.visitor;
+package pizza.blackolivepineapple.sentinel.visitor;
 
-import pizza.blackolivepineapple.calculator.ast.*;
+import pizza.blackolivepineapple.sentinel.ast.*;
 
 import java.lang.reflect.InvocationTargetException;
 

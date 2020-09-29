@@ -1,11 +1,11 @@
-package pizza.blackolivepineapple.calculator.run;
+package pizza.blackolivepineapple.sentinel.run;
 
-import antlr.MathLexer;
-import antlr.MathParser;
+import antlr.SentinelLexer;
+import antlr.SentinelParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import pizza.blackolivepineapple.calculator.visitor.BuildAstVisitor;
-import pizza.blackolivepineapple.calculator.visitor.EvaluateExpressionVisitor;
+import pizza.blackolivepineapple.sentinel.visitor.BuildAstVisitor;
+import pizza.blackolivepineapple.sentinel.visitor.EvaluateExpressionVisitor;
 
 import java.io.Console;
 import java.io.IOException;
@@ -28,13 +28,13 @@ public class Program {
                 }
 
                 var inputStream = new ANTLRInputStream(new StringReader(exprText));
-                var lexer = new MathLexer(inputStream);
+                var lexer = new SentinelLexer(inputStream);
                 var tokenStream = new CommonTokenStream(lexer);
-                var parser = new MathParser(tokenStream);
+                var parser = new SentinelParser(tokenStream);
 
                 try {
-                    var cst = parser.compileUnit();
-                    var ast = new BuildAstVisitor().visitCompileUnit(cst);
+                    var cst = parser.program();
+                    var ast = new BuildAstVisitor().visitProgram(cst);
                     var value = new EvaluateExpressionVisitor().visit(ast);
 
                     System.out.printf("= %f\n", value);

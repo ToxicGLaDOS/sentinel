@@ -1,4 +1,4 @@
-package pizza.blackolivepineapple.calculator.ast;
+package pizza.blackolivepineapple.sentinel.ast;
 
 import java.lang.reflect.Method;
 

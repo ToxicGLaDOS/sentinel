@@ -1,4 +1,4 @@
-package pizza.blackolivepineapple.calculator.ast;
+package pizza.blackolivepineapple.sentinel.ast;
 
 public class DivisionNode extends InfixExpressionNode {
         public DivisionNode(ExpressionNode left, ExpressionNode right) {

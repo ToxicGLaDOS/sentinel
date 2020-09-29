@@ -1,4 +1,4 @@
-package pizza.blackolivepineapple.calculator.ast;
+package pizza.blackolivepineapple.sentinel.ast;
 
 public class NegateNode extends ExpressionNode {
         public ExpressionNode innerNode;

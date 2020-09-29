@@ -1,6 +1,6 @@
-package pizza.blackolivepineapple.calculator.visitor;
+package pizza.blackolivepineapple.sentinel.visitor;
 
-import pizza.blackolivepineapple.calculator.ast.*;
+import pizza.blackolivepineapple.sentinel.ast.*;
 
 abstract class AstVisitor<T> {
     public abstract T visit(AdditionNode node);
@@ -11,7 +11,7 @@ abstract class AstVisitor<T> {
     public abstract T visit(FunctionNode node);
     public abstract T visit(NumberNode node);
 
-    public T visit(ExpressionNode node) {
+    public T visit(AstNode node) {
         if (node instanceof AdditionNode){
             return visit((AdditionNode)node);
         }

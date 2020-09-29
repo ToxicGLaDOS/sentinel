@@ -1,4 +1,4 @@
-package pizza.blackolivepineapple.calculator.ast;
+package pizza.blackolivepineapple.sentinel.ast;
 
 public class SubtractionNode extends InfixExpressionNode {
         public SubtractionNode(ExpressionNode left, ExpressionNode right) {
