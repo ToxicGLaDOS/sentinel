@@ -17,9 +17,9 @@ public class SentinelParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, OP_ADD=8, OP_SUB=9, 
-		OP_MUL=10, OP_DIV=11, LITERAL=12, INT_LITERAL=13, FLOAT_LITERAL=14, STRING_LITERAL=15, 
-		NUM=16, ID=17, WATCHABLE_ID=18, WS=19;
+		OP_ADD=1, OP_SUB=2, OP_MUL=3, OP_DIV=4, WATCHES=5, EQUALS=6, LEFT_PAREN=7, 
+		RIGHT_PAREN=8, LEFT_BRACKET=9, RIGHT_BRACKET=10, COMMA=11, LITERAL=12, 
+		NUM=13, ID=14, WATCHABLE_ID=15, WS=16;
 	public static final int
 		RULE_program = 0, RULE_statement = 1, RULE_expr = 2;
 	private static String[] makeRuleNames() {
@@ -31,16 +31,16 @@ public class SentinelParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'('", "','", "')'", "'{'", "'}'", "'watches'", "'='", "'+'", "'-'", 
-			"'*'", "'/'"
+			null, "'+'", "'-'", "'*'", "'/'", "'watches'", "'='", "'('", "')'", "'{'", 
+			"'}'", "','"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, "OP_ADD", "OP_SUB", "OP_MUL", 
-			"OP_DIV", "LITERAL", "INT_LITERAL", "FLOAT_LITERAL", "STRING_LITERAL", 
-			"NUM", "ID", "WATCHABLE_ID", "WS"
+			null, "OP_ADD", "OP_SUB", "OP_MUL", "OP_DIV", "WATCHES", "EQUALS", "LEFT_PAREN", 
+			"RIGHT_PAREN", "LEFT_BRACKET", "RIGHT_BRACKET", "COMMA", "LITERAL", "NUM", 
+			"ID", "WATCHABLE_ID", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -168,16 +168,41 @@ public class SentinelParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class EqualStatementContext extends StatementContext {
+	public static class VariableDeclStatementContext extends StatementContext {
 		public Token typeName;
 		public Token varName;
-		public Token varNameOther;
-		public Token literalValue;
+		public ExprContext expression;
+		public TerminalNode EQUALS() { return getToken(SentinelParser.EQUALS, 0); }
 		public List<TerminalNode> ID() { return getTokens(SentinelParser.ID); }
 		public TerminalNode ID(int i) {
 			return getToken(SentinelParser.ID, i);
 		}
-		public TerminalNode LITERAL() { return getToken(SentinelParser.LITERAL, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public VariableDeclStatementContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SentinelListener ) ((SentinelListener)listener).enterVariableDeclStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SentinelListener ) ((SentinelListener)listener).exitVariableDeclStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SentinelVisitor ) return ((SentinelVisitor<? extends T>)visitor).visitVariableDeclStatement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class EqualStatementContext extends StatementContext {
+		public Token varName;
+		public ExprContext expression;
+		public TerminalNode EQUALS() { return getToken(SentinelParser.EQUALS, 0); }
+		public TerminalNode ID() { return getToken(SentinelParser.ID, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
 		public EqualStatementContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -193,21 +218,26 @@ public class SentinelParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class WatchesStatementContext extends StatementContext {
-		public TerminalNode ID() { return getToken(SentinelParser.ID, 0); }
-		public TerminalNode WATCHABLE_ID() { return getToken(SentinelParser.WATCHABLE_ID, 0); }
-		public WatchesStatementContext(StatementContext ctx) { copyFrom(ctx); }
+	public static class WatchesDeclStatementContext extends StatementContext {
+		public Token watcherName;
+		public Token watchable;
+		public TerminalNode WATCHES() { return getToken(SentinelParser.WATCHES, 0); }
+		public List<TerminalNode> ID() { return getTokens(SentinelParser.ID); }
+		public TerminalNode ID(int i) {
+			return getToken(SentinelParser.ID, i);
+		}
+		public WatchesDeclStatementContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SentinelListener ) ((SentinelListener)listener).enterWatchesStatement(this);
+			if ( listener instanceof SentinelListener ) ((SentinelListener)listener).enterWatchesDeclStatement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SentinelListener ) ((SentinelListener)listener).exitWatchesStatement(this);
+			if ( listener instanceof SentinelListener ) ((SentinelListener)listener).exitWatchesDeclStatement(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SentinelVisitor ) return ((SentinelVisitor<? extends T>)visitor).visitWatchesStatement(this);
+			if ( visitor instanceof SentinelVisitor ) return ((SentinelVisitor<? extends T>)visitor).visitWatchesDeclStatement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -216,6 +246,11 @@ public class SentinelParser extends Parser {
 		public Token type;
 		public Token varName0;
 		public Token varName1;
+		public TerminalNode LEFT_PAREN() { return getToken(SentinelParser.LEFT_PAREN, 0); }
+		public TerminalNode COMMA() { return getToken(SentinelParser.COMMA, 0); }
+		public TerminalNode RIGHT_PAREN() { return getToken(SentinelParser.RIGHT_PAREN, 0); }
+		public TerminalNode LEFT_BRACKET() { return getToken(SentinelParser.LEFT_BRACKET, 0); }
+		public TerminalNode RIGHT_BRACKET() { return getToken(SentinelParser.RIGHT_BRACKET, 0); }
 		public List<TerminalNode> ID() { return getTokens(SentinelParser.ID); }
 		public TerminalNode ID(int i) {
 			return getToken(SentinelParser.ID, i);
@@ -241,41 +276,15 @@ public class SentinelParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class OneParamWatcherDefContext extends StatementContext {
-		public List<TerminalNode> ID() { return getTokens(SentinelParser.ID); }
-		public TerminalNode ID(int i) {
-			return getToken(SentinelParser.ID, i);
-		}
-		public List<StatementContext> statement() {
-			return getRuleContexts(StatementContext.class);
-		}
-		public StatementContext statement(int i) {
-			return getRuleContext(StatementContext.class,i);
-		}
-		public OneParamWatcherDefContext(StatementContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SentinelListener ) ((SentinelListener)listener).enterOneParamWatcherDef(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SentinelListener ) ((SentinelListener)listener).exitOneParamWatcherDef(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SentinelVisitor ) return ((SentinelVisitor<? extends T>)visitor).visitOneParamWatcherDef(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 
 	public final StatementContext statement() throws RecognitionException {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_statement);
 		int _la;
 		try {
-			setState(53);
+			setState(40);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				_localctx = new TwoParamWatcherDefContext(_localctx);
 				enterOuterAlt(_localctx, 1);
@@ -283,21 +292,21 @@ public class SentinelParser extends Parser {
 				setState(14);
 				((TwoParamWatcherDefContext)_localctx).watcherName = match(ID);
 				setState(15);
-				match(T__0);
+				match(LEFT_PAREN);
 				setState(16);
 				((TwoParamWatcherDefContext)_localctx).type = match(ID);
 				setState(17);
 				((TwoParamWatcherDefContext)_localctx).varName0 = match(ID);
 				setState(18);
-				match(T__1);
+				match(COMMA);
 				setState(19);
 				((TwoParamWatcherDefContext)_localctx).type = match(ID);
 				setState(20);
 				((TwoParamWatcherDefContext)_localctx).varName1 = match(ID);
 				setState(21);
-				match(T__2);
+				match(RIGHT_PAREN);
 				setState(22);
-				match(T__3);
+				match(LEFT_BRACKET);
 				setState(26);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -313,83 +322,45 @@ public class SentinelParser extends Parser {
 					_la = _input.LA(1);
 				}
 				setState(29);
-				match(T__4);
+				match(RIGHT_BRACKET);
 				}
 				break;
 			case 2:
-				_localctx = new OneParamWatcherDefContext(_localctx);
+				_localctx = new WatchesDeclStatementContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(30);
-				match(ID);
+				((WatchesDeclStatementContext)_localctx).watcherName = match(ID);
 				setState(31);
-				match(T__0);
+				match(WATCHES);
 				setState(32);
-				match(ID);
-				setState(33);
-				match(ID);
-				setState(34);
-				match(T__2);
-				setState(35);
-				match(T__3);
-				setState(39);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==ID) {
-					{
-					{
-					setState(36);
-					statement();
-					}
-					}
-					setState(41);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
-				setState(42);
-				match(T__4);
+				((WatchesDeclStatementContext)_localctx).watchable = match(ID);
 				}
 				break;
 			case 3:
-				_localctx = new WatchesStatementContext(_localctx);
+				_localctx = new EqualStatementContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(43);
-				match(ID);
-				setState(44);
-				match(T__5);
-				setState(45);
-				match(WATCHABLE_ID);
+				setState(33);
+				((EqualStatementContext)_localctx).varName = match(ID);
+				setState(34);
+				match(EQUALS);
+				setState(35);
+				((EqualStatementContext)_localctx).expression = expr(0);
 				}
 				break;
 			case 4:
-				_localctx = new EqualStatementContext(_localctx);
+				_localctx = new VariableDeclStatementContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(46);
-				((EqualStatementContext)_localctx).typeName = match(ID);
-				setState(47);
-				((EqualStatementContext)_localctx).varName = match(ID);
-				setState(48);
-				match(T__6);
-				setState(51);
-				_errHandler.sync(this);
-				switch (_input.LA(1)) {
-				case ID:
-					{
-					setState(49);
-					((EqualStatementContext)_localctx).varNameOther = match(ID);
-					}
-					break;
-				case LITERAL:
-					{
-					setState(50);
-					((EqualStatementContext)_localctx).literalValue = match(LITERAL);
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
-				}
+				setState(36);
+				((VariableDeclStatementContext)_localctx).typeName = match(ID);
+				setState(37);
+				((VariableDeclStatementContext)_localctx).varName = match(ID);
+				setState(38);
+				match(EQUALS);
+				setState(39);
+				((VariableDeclStatementContext)_localctx).expression = expr(0);
 				}
 				break;
 			}
@@ -469,7 +440,7 @@ public class SentinelParser extends Parser {
 	}
 	public static class NumberExprContext extends ExprContext {
 		public Token value;
-		public TerminalNode NUM() { return getToken(SentinelParser.NUM, 0); }
+		public TerminalNode LITERAL() { return getToken(SentinelParser.LITERAL, 0); }
 		public NumberExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -486,9 +457,11 @@ public class SentinelParser extends Parser {
 		}
 	}
 	public static class ParensExprContext extends ExprContext {
+		public TerminalNode LEFT_PAREN() { return getToken(SentinelParser.LEFT_PAREN, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
+		public TerminalNode RIGHT_PAREN() { return getToken(SentinelParser.RIGHT_PAREN, 0); }
 		public ParensExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -521,21 +494,21 @@ public class SentinelParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(63);
+			setState(50);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__0:
+			case LEFT_PAREN:
 				{
 				_localctx = new ParensExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(56);
-				match(T__0);
-				setState(57);
+				setState(43);
+				match(LEFT_PAREN);
+				setState(44);
 				expr(0);
-				setState(58);
-				match(T__2);
+				setState(45);
+				match(RIGHT_PAREN);
 				}
 				break;
 			case OP_ADD:
@@ -544,7 +517,7 @@ public class SentinelParser extends Parser {
 				_localctx = new UnaryExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(60);
+				setState(47);
 				((UnaryExprContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==OP_ADD || _la==OP_SUB) ) {
@@ -555,42 +528,42 @@ public class SentinelParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(61);
+				setState(48);
 				expr(4);
 				}
 				break;
-			case NUM:
+			case LITERAL:
 				{
 				_localctx = new NumberExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(62);
-				((NumberExprContext)_localctx).value = match(NUM);
+				setState(49);
+				((NumberExprContext)_localctx).value = match(LITERAL);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(73);
+			setState(60);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(71);
+					setState(58);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 					case 1:
 						{
 						_localctx = new InfixExprContext(new ExprContext(_parentctx, _parentState));
 						((InfixExprContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(65);
+						setState(52);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(66);
+						setState(53);
 						((InfixExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==OP_MUL || _la==OP_DIV) ) {
@@ -601,7 +574,7 @@ public class SentinelParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(67);
+						setState(54);
 						((InfixExprContext)_localctx).right = expr(4);
 						}
 						break;
@@ -610,9 +583,9 @@ public class SentinelParser extends Parser {
 						_localctx = new InfixExprContext(new ExprContext(_parentctx, _parentState));
 						((InfixExprContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(68);
+						setState(55);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(69);
+						setState(56);
 						((InfixExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==OP_ADD || _la==OP_SUB) ) {
@@ -623,16 +596,16 @@ public class SentinelParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(70);
+						setState(57);
 						((InfixExprContext)_localctx).right = expr(3);
 						}
 						break;
 					}
 					} 
 				}
-				setState(75);
+				setState(62);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
 			}
 		}
@@ -665,27 +638,24 @@ public class SentinelParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\25O\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\22B\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\3\2\7\2\n\n\2\f\2\16\2\r\13\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\7\3\33\n\3\f\3\16\3\36\13\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\7\3(\n\3\f\3\16\3+\13\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5"+
-		"\3\66\n\3\5\38\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4B\n\4\3\4\3\4\3"+
-		"\4\3\4\3\4\3\4\7\4J\n\4\f\4\16\4M\13\4\3\4\2\3\6\5\2\4\6\2\4\3\2\n\13"+
-		"\3\2\f\r\2V\2\13\3\2\2\2\4\67\3\2\2\2\6A\3\2\2\2\b\n\5\4\3\2\t\b\3\2\2"+
-		"\2\n\r\3\2\2\2\13\t\3\2\2\2\13\f\3\2\2\2\f\16\3\2\2\2\r\13\3\2\2\2\16"+
-		"\17\7\2\2\3\17\3\3\2\2\2\20\21\7\23\2\2\21\22\7\3\2\2\22\23\7\23\2\2\23"+
-		"\24\7\23\2\2\24\25\7\4\2\2\25\26\7\23\2\2\26\27\7\23\2\2\27\30\7\5\2\2"+
-		"\30\34\7\6\2\2\31\33\5\4\3\2\32\31\3\2\2\2\33\36\3\2\2\2\34\32\3\2\2\2"+
-		"\34\35\3\2\2\2\35\37\3\2\2\2\36\34\3\2\2\2\378\7\7\2\2 !\7\23\2\2!\"\7"+
-		"\3\2\2\"#\7\23\2\2#$\7\23\2\2$%\7\5\2\2%)\7\6\2\2&(\5\4\3\2\'&\3\2\2\2"+
-		"(+\3\2\2\2)\'\3\2\2\2)*\3\2\2\2*,\3\2\2\2+)\3\2\2\2,8\7\7\2\2-.\7\23\2"+
-		"\2./\7\b\2\2/8\7\24\2\2\60\61\7\23\2\2\61\62\7\23\2\2\62\65\7\t\2\2\63"+
-		"\66\7\23\2\2\64\66\7\16\2\2\65\63\3\2\2\2\65\64\3\2\2\2\668\3\2\2\2\67"+
-		"\20\3\2\2\2\67 \3\2\2\2\67-\3\2\2\2\67\60\3\2\2\28\5\3\2\2\29:\b\4\1\2"+
-		":;\7\3\2\2;<\5\6\4\2<=\7\5\2\2=B\3\2\2\2>?\t\2\2\2?B\5\6\4\6@B\7\22\2"+
-		"\2A9\3\2\2\2A>\3\2\2\2A@\3\2\2\2BK\3\2\2\2CD\f\5\2\2DE\t\3\2\2EJ\5\6\4"+
-		"\6FG\f\4\2\2GH\t\2\2\2HJ\5\6\4\5IC\3\2\2\2IF\3\2\2\2JM\3\2\2\2KI\3\2\2"+
-		"\2KL\3\2\2\2L\7\3\2\2\2MK\3\2\2\2\n\13\34)\65\67AIK";
+		"\3\3\3\3\3\3\3\3\3\3\5\3+\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4\65\n"+
+		"\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4=\n\4\f\4\16\4@\13\4\3\4\2\3\6\5\2\4\6\2"+
+		"\4\3\2\3\4\3\2\5\6\2G\2\13\3\2\2\2\4*\3\2\2\2\6\64\3\2\2\2\b\n\5\4\3\2"+
+		"\t\b\3\2\2\2\n\r\3\2\2\2\13\t\3\2\2\2\13\f\3\2\2\2\f\16\3\2\2\2\r\13\3"+
+		"\2\2\2\16\17\7\2\2\3\17\3\3\2\2\2\20\21\7\20\2\2\21\22\7\t\2\2\22\23\7"+
+		"\20\2\2\23\24\7\20\2\2\24\25\7\r\2\2\25\26\7\20\2\2\26\27\7\20\2\2\27"+
+		"\30\7\n\2\2\30\34\7\13\2\2\31\33\5\4\3\2\32\31\3\2\2\2\33\36\3\2\2\2\34"+
+		"\32\3\2\2\2\34\35\3\2\2\2\35\37\3\2\2\2\36\34\3\2\2\2\37+\7\f\2\2 !\7"+
+		"\20\2\2!\"\7\7\2\2\"+\7\20\2\2#$\7\20\2\2$%\7\b\2\2%+\5\6\4\2&\'\7\20"+
+		"\2\2\'(\7\20\2\2()\7\b\2\2)+\5\6\4\2*\20\3\2\2\2* \3\2\2\2*#\3\2\2\2*"+
+		"&\3\2\2\2+\5\3\2\2\2,-\b\4\1\2-.\7\t\2\2./\5\6\4\2/\60\7\n\2\2\60\65\3"+
+		"\2\2\2\61\62\t\2\2\2\62\65\5\6\4\6\63\65\7\16\2\2\64,\3\2\2\2\64\61\3"+
+		"\2\2\2\64\63\3\2\2\2\65>\3\2\2\2\66\67\f\5\2\2\678\t\3\2\28=\5\6\4\69"+
+		":\f\4\2\2:;\t\2\2\2;=\5\6\4\5<\66\3\2\2\2<9\3\2\2\2=@\3\2\2\2><\3\2\2"+
+		"\2>?\3\2\2\2?\7\3\2\2\2@>\3\2\2\2\b\13\34*\64<>";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

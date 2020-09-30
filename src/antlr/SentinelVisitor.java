@@ -24,19 +24,12 @@ public interface SentinelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTwoParamWatcherDef(SentinelParser.TwoParamWatcherDefContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code oneParamWatcherDef}
+	 * Visit a parse tree produced by the {@code watchesDeclStatement}
 	 * labeled alternative in {@link SentinelParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOneParamWatcherDef(SentinelParser.OneParamWatcherDefContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code watchesStatement}
-	 * labeled alternative in {@link SentinelParser#statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWatchesStatement(SentinelParser.WatchesStatementContext ctx);
+	T visitWatchesDeclStatement(SentinelParser.WatchesDeclStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code equalStatement}
 	 * labeled alternative in {@link SentinelParser#statement}.
@@ -44,6 +37,13 @@ public interface SentinelVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEqualStatement(SentinelParser.EqualStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code variableDeclStatement}
+	 * labeled alternative in {@link SentinelParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableDeclStatement(SentinelParser.VariableDeclStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code infixExpr}
 	 * labeled alternative in {@link SentinelParser#expr}.

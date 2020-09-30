@@ -25,7 +25,7 @@ grun:
 ifndef antlr4_jar
 	    @echo "Please define absolute path to antlr4 jar in antlr4_jar variable either through environment or -e flag"
 else
-	    cd comp/ && java org.antlr.v4.gui.TestRig antlr.Sentinel program ../test.sen -gui
+	    cd comp/ && java org.antlr.v4.gui.TestRig antlr.Sentinel program ../test.sen $(GRUN_OPTS)
 endif
 
 clean:

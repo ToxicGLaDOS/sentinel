@@ -1,10 +1,12 @@
 package pizza.blackolivepineapple.sentinel.ast;
 
-public class TwoParamWatcherDefNode extends StatementNode {
-    String watcherName, type, varName0, varName1;
+import java.util.List;
 
-    public TwoParamWatcherDefNode(String watcherName, String type, String varName0, String varName1) {
-        this.watcherName = watcherName;
+public class TwoParamWatcherDefNode extends WatcherDefNode {
+    String type, varName0, varName1;
+
+    public TwoParamWatcherDefNode(String watcherName, String type, String varName0, String varName1, List<StatementNode> statements) {
+        super(watcherName, statements);
         this.type = type;
         this.varName0 = varName0;
         this.varName1 = varName1;

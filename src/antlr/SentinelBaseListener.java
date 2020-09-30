@@ -40,25 +40,13 @@ public class SentinelBaseListener implements SentinelListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOneParamWatcherDef(SentinelParser.OneParamWatcherDefContext ctx) { }
+	@Override public void enterWatchesDeclStatement(SentinelParser.WatchesDeclStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOneParamWatcherDef(SentinelParser.OneParamWatcherDefContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterWatchesStatement(SentinelParser.WatchesStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitWatchesStatement(SentinelParser.WatchesStatementContext ctx) { }
+	@Override public void exitWatchesDeclStatement(SentinelParser.WatchesDeclStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -71,6 +59,18 @@ public class SentinelBaseListener implements SentinelListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEqualStatement(SentinelParser.EqualStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVariableDeclStatement(SentinelParser.VariableDeclStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariableDeclStatement(SentinelParser.VariableDeclStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

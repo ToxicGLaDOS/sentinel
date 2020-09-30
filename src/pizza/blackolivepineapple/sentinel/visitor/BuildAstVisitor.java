@@ -12,6 +12,8 @@ import java.util.List;
 public class BuildAstVisitor extends SentinelBaseVisitor<AstNode> {
         public AstNode visitProgram(SentinelParser.ProgramContext context) {
             List<StatementNode> statementNodes = new LinkedList<>();
+
+            // Visit each statement and add the resulting node the the list
             for (SentinelParser.StatementContext statementContext :
                     context.statement()) {
                 StatementNode statementNode = (StatementNode) visit(statementContext);
@@ -21,7 +23,30 @@ public class BuildAstVisitor extends SentinelBaseVisitor<AstNode> {
         }
 
         public AstNode visitTwoParamWatcherDef(SentinelParser.TwoParamWatcherDefContext context){
-            return new TwoParamWatcherDefNode(context.watcherName.getText(), context.type.getText(), context.varName0.getText(), context.varName1.getText());
+            List<StatementNode> statementNodes = new LinkedList<>();
+
+            // Visit each statement and add the resulting node the the list
+            for (SentinelParser.StatementContext statementContext :
+                    context.statement()) {
+                StatementNode statementNode = (StatementNode) visit(statementContext);
+                statementNodes.add(statementNode);
+            }
+            return new TwoParamWatcherDefNode(context.watcherName.getText(), context.type.getText(), context.varName0.getText(), context.varName1.getText(), statementNodes);
+        }
+
+        public AstNode visitEqualStatement(SentinelParser.EqualStatementContext context){
+            String varName = context.varName.getText();
+            ExpressionNode expressionNode = (ExpressionNode) visit(context.expression);
+            return new EqualStatementNode(varName, expressionNode);
+        }
+
+        public AstNode visitVariableDeclStatement(SentinelParser.VariableDeclStatementContext context){
+            ExpressionNode expressionNode = (ExpressionNode) visit(context.expression);
+            return new VariableDeclStatementNode(context.typeName.getText(), context.varName.getText(), expressionNode);
+        }
+
+        public AstNode visitWatchesDeclStatement(SentinelParser.WatchesDeclStatementContext context) {
+            return new WatchesDeclStatementNode(context.watcherName.getText(), context.watchable.getText());
         }
 
         public AstNode visitNumberExpr(SentinelParser.NumberExprContext context) {
