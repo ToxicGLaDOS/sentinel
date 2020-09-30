@@ -1,5 +1,9 @@
 ## What is it?
-A really simple calculator that's powered by antlr4 to demonstrate how to create an AST using antlr4. This is basically a java translation of the stackoverflow answer [here](https://stackoverflow.com/a/29996191)
+An event based programming language.
+
+What does that mean?
+
+TBD
 
 ## Requirements
 
