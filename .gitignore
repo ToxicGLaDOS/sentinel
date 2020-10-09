@@ -2,4 +2,5 @@ comp/
 *.class
 *.iml
 .idea/
-*.sen
+.vscode/
+build/
