@@ -4,7 +4,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.7 FATAL_ERROR)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # compiler must be 11 or 14
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # required if linking to static library
 add_definitions(-DANTLR4CPP_STATIC)
@@ -27,21 +27,18 @@ antlr_target(SampleGrammarParser Sentinel.g4 VISITOR
              PACKAGE antlrcpptest)
 
 include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
-include_directories(ast visitor)
+include_directories(visitor values)
 
 list(APPEND visitors 
     visitor/BuildAstVisitor.cpp
-    visitor/AstVisitor.cpp)
+    )
 
-list(APPEND nodes
-    ast/NumberNode.cpp
-    ast/EqualStatementNode.cpp
-    ast/ProgramNode.cpp
-    ast/VariableDeclStatementNode.cpp)
+list(APPEND values
+    values/SentinelValue.cpp)
 
 add_executable(demo main.cpp
                ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}
                ${visitors}
-               ${nodes})
+               ${values})
 
 target_link_libraries(demo antlr4_static)

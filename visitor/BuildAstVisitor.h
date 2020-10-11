@@ -1,8 +1,5 @@
-#include "AstNode.h"
 #include "SentinelBaseVisitor.h"
 #include "SentinelParser.h"
-#include "StatementNode.h"
-#include "ProgramNode.h"
 
 class BuildAstVisitor : public antlrcpptest::SentinelBaseVisitor {
     public:
@@ -35,43 +32,7 @@ class BuildAstVisitor : public antlrcpptest::SentinelBaseVisitor {
         //         return visit(context.expr());
         // }
 
-        // public AstNode visitInfixExpr(SentinelParser.InfixExprContext context){
-        //         InfixExpressionNode node;
+        antlrcpp::Any visitInfixExpr(antlrcpptest::SentinelParser::InfixExprContext* context) override;
 
-        //         switch (context.op.getType()) {
-        //         case SentinelLexer.OP_ADD:
-        //             node = new AdditionNode((ExpressionNode) visit(context.left), (ExpressionNode) visit(context.right));
-        //             break;
-
-        //         case SentinelLexer.OP_SUB:
-        //             node = new SubtractionNode((ExpressionNode) visit(context.left), (ExpressionNode) visit(context.right));
-        //             break;
-
-        //         case SentinelLexer.OP_MUL:
-        //             node = new MultiplicationNode((ExpressionNode) visit(context.left), (ExpressionNode) visit(context.right));
-        //             break;
-
-        //         case SentinelLexer.OP_DIV:
-        //             node = new DivisionNode((ExpressionNode) visit(context.left), (ExpressionNode) visit(context.right));
-        //             break;
-
-        //         default:
-        //             throw new UnsupportedOperationException();
-        //         }
-
-        //         return node;
-        // }
-
-        // public AstNode visitUnaryExpr(SentinelParser.UnaryExprContext context) {
-        //         switch (context.op.getType()) {
-        //         case SentinelLexer.OP_ADD:
-        //                 return visit(context.expr());
-
-        //         case SentinelLexer.OP_SUB:
-        //                 return new NegateNode((ExpressionNode) visit(context.expr()));
-
-        //         default:
-        //                 throw new UnsupportedOperationException();
-        //         }
-        // }
+        //antlrcpp::Any visitUnaryExpr(antlrcpptest::SentinelParser::UnaryExprContext* context) override;
 };

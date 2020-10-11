@@ -23,24 +23,12 @@
 using namespace antlrcpptest;
 using namespace antlr4;
 
+
 int main(int , const char **) {
   std::ifstream testFile;
   testFile.open("../test.sen");
-  std::string line, file;
-  if (testFile.is_open()){
-    while( getline (testFile, line)){
-      file += line + '\n';
-    }
-    testFile.close();
-  }
-  else {
-    std::cout << "Cannot open test.sen" << '\n';
-  }
   
-  std::cout << "File: ";
-  std::cout << file << '\n';
-
-  ANTLRInputStream input(file);
+  ANTLRInputStream input(testFile);
   SentinelLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
 
@@ -53,6 +41,7 @@ int main(int , const char **) {
   antlrcpptest::SentinelParser::ProgramContext* cst = parser.program();
   BuildAstVisitor ast;
   ast.visitProgram(cst);
+  std::cout << "Done" << std::endl;
   //EvaluateProgramVisitor program(ast);
 
   // std::cout << tree->toStringTree(&parser) << std::endl << std::endl;
