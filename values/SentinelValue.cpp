@@ -1,3 +1,9 @@
+/*
+ * Definitions for SentinelValue
+ *
+ * See SentinelValue.h for more information
+*/
+
 #include "SentinelValue.h"
 #include <iostream>
 #include <variant>

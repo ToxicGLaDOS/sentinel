@@ -1,7 +1,20 @@
+/*
+ * Declarations for methods of ExecuteVisitor
+ * 
+ * When a context is visited by methods of ExecuteVisitor the code they represent are executed
+ * For example, visiting an InfixExprContext with the visitInfixExpr method will execute the sentinel code
+ * in that InfixExprContext. If the InfixExprContext has 2 + 2 in it then visiting it will do 2 + 2.
+ * What I'm getting at here is to execute sentinel code you visit the context.
+ * 
+ * The entry point to all of these methods is visitProgram which visits the rest of the
+ * rest of the parse tree. Because of that you should never call any of the visitXXX
+ * from outside of another visitXXX method except visitProgram.
+*/
+
 #include "SentinelBaseVisitor.h"
 #include "SentinelParser.h"
 
-class BuildAstVisitor : public antlrcpptest::SentinelBaseVisitor {
+class ExecuteVisitor : public antlrcpptest::SentinelBaseVisitor {
     public:
         antlrcpp::Any visitProgram(antlrcpptest::SentinelParser::ProgramContext* context) override;
 

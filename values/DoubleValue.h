@@ -1,3 +1,11 @@
+/*
+ * Declarations for DoubleValue
+ *
+ * DoubleValue is a subclass of SentinelValue. It represents a
+ * double in sentinel. DoubleValue defines how doubles interact with other
+ * SentinelValues in sentinel by overriding the pure virtual methods of SentinelValue e.g. add().
+*/
+
 #pragma once
 #include "SentinelValue.h"
 #include "IntValue.h"

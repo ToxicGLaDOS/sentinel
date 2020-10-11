@@ -1,3 +1,11 @@
+/*
+ * Declarations for IntValue
+ *
+ * IntValue is a subclass of SentinelValue. It represents a
+ * int in sentinel. IntValue defines how ints interact with other
+ * SentinelValues in sentinel by overriding the pure virtual methods of SentinelValue e.g. add().
+*/
+
 #pragma once
 #include "SentinelValue.h"
 #include "DoubleValue.h"

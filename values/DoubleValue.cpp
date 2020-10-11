@@ -1,3 +1,9 @@
+/*
+ * Definitions for DoubleValue
+ *
+ * See DoubleValue.h for more information
+*/
+
 #include "DoubleValue.h"
 
 

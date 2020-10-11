@@ -30,7 +30,7 @@ include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
 include_directories(visitor values)
 
 list(APPEND visitors 
-    visitor/BuildAstVisitor.cpp
+    visitor/ExecuteVisitor.cpp
     )
 
 list(APPEND values

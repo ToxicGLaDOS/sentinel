@@ -1,3 +1,10 @@
+/*
+ * Definitions for IntValue
+ *
+ * See IntValue.h for more information
+*/
+
+
 #include "IntValue.h"
 
 

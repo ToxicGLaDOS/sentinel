@@ -17,7 +17,7 @@
 #include "SentinelLexer.h"
 #include "SentinelParser.h"
 
-#include "BuildAstVisitor.h"
+#include "ExecuteVisitor.h"
 
 using namespace antlrcpptest;
 using namespace antlr4;
@@ -38,7 +38,7 @@ int main(int , const char **) {
 
   SentinelParser parser(&tokens);
   antlrcpptest::SentinelParser::ProgramContext* cst = parser.program();
-  BuildAstVisitor ast;
+  ExecuteVisitor ast;
   ast.visitProgram(cst);
   std::cout << "Done" << std::endl;
 

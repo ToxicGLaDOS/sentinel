@@ -1,9 +1,19 @@
-#include "BuildAstVisitor.h"
+/*
+ * Definitions for methods of ExecuteVisitor
+ * 
+ * See ExecuteVisitor.h for more information.
+*/
+
+#include "ExecuteVisitor.h"
 #include "SentinelValue.h"
 #include "DoubleValue.h"
 #include <memory>
 
-antlrcpp::Any BuildAstVisitor::visitProgram(antlrcpptest::SentinelParser::ProgramContext* context) {
+
+/*
+ * This is the only method that should be called from outside this class.
+*/
+antlrcpp::Any ExecuteVisitor::visitProgram(antlrcpptest::SentinelParser::ProgramContext* context) {
 
     for (antlrcpptest::SentinelParser::StatementContext* statementContext : context->statement()){
         visit(statementContext);
@@ -11,36 +21,33 @@ antlrcpp::Any BuildAstVisitor::visitProgram(antlrcpptest::SentinelParser::Progra
     return nullptr;
 }
 
-antlrcpp::Any BuildAstVisitor::visitEqualStatement(antlrcpptest::SentinelParser::EqualStatementContext *context){
+antlrcpp::Any ExecuteVisitor::visitEqualStatement(antlrcpptest::SentinelParser::EqualStatementContext *context){
     return visit(context->expression);
 }
 
-antlrcpp::Any BuildAstVisitor::visitVariableDeclStatement(antlrcpptest::SentinelParser::VariableDeclStatementContext* context){
+antlrcpp::Any ExecuteVisitor::visitVariableDeclStatement(antlrcpptest::SentinelParser::VariableDeclStatementContext* context){
     // Here we probably add the variable to the symbol table
     return visit(context->expression);
 }
 
-antlrcpp::Any BuildAstVisitor::visitLiteralExpr(antlrcpptest::SentinelParser::LiteralExprContext* context) {
+antlrcpp::Any ExecuteVisitor::visitLiteralExpr(antlrcpptest::SentinelParser::LiteralExprContext* context) {
     if(context->literal()->children.size() < 1){
         throw std::runtime_error("literal expression with no children?");
     }
     return visit(context->literal()->children[0]);
-    //std::cout << context->literal()->children[0]->getText() << std::endl;
-    //auto number = std::make_shared<DoubleValue>(stod(context->value->getText()));
-    //return std::dynamic_pointer_cast<SentinelValue>(number);
 }
 
-antlrcpp::Any BuildAstVisitor::visitFloatLiteral(antlrcpptest::SentinelParser::FloatLiteralContext* context) {
+antlrcpp::Any ExecuteVisitor::visitFloatLiteral(antlrcpptest::SentinelParser::FloatLiteralContext* context) {
     auto number = std::make_shared<DoubleValue>(stod(context->FLOAT()->getText()));
     return std::dynamic_pointer_cast<SentinelValue>(number);
 }
 
-antlrcpp::Any BuildAstVisitor::visitIntLiteral(antlrcpptest::SentinelParser::IntLiteralContext* context) {
+antlrcpp::Any ExecuteVisitor::visitIntLiteral(antlrcpptest::SentinelParser::IntLiteralContext* context) {
     auto number = std::make_shared<IntValue>(stoi(context->INT()->getText()));
     return std::dynamic_pointer_cast<SentinelValue>(number);
 }
 
-antlrcpp::Any BuildAstVisitor::visitInfixExpr(antlrcpptest::SentinelParser::InfixExprContext* context){
+antlrcpp::Any ExecuteVisitor::visitInfixExpr(antlrcpptest::SentinelParser::InfixExprContext* context){
     std::shared_ptr<SentinelValue> value;
     auto left = visit(context->left).as<std::shared_ptr<SentinelValue>>();
     auto right = visit(context->right).as<std::shared_ptr<SentinelValue>>();
@@ -69,7 +76,7 @@ antlrcpp::Any BuildAstVisitor::visitInfixExpr(antlrcpptest::SentinelParser::Infi
     return value;
 }
 
-// antlrcpp::Any BuildAstVisitor::visitUnaryExpr(antlrcpptest::SentinelParser::UnaryExprContext* context){
+// antlrcpp::Any ExecuteVisitor::visitUnaryExpr(antlrcpptest::SentinelParser::UnaryExprContext* context){
 //     std::cout << "Unary expr" << std::endl;
 //     switch (context->op->getType()) {
 //         case antlrcpptest::SentinelParser::OP_ADD:
