@@ -26,7 +26,11 @@ class BuildAstVisitor : public antlrcpptest::SentinelBaseVisitor {
         //     return new WatchesDeclStatementNode(context.watcherName.getText(), context.watchable.getText());
         // }
 
-        antlrcpp::Any visitNumberExpr(antlrcpptest::SentinelParser::NumberExprContext* context) override;
+        antlrcpp::Any visitLiteralExpr(antlrcpptest::SentinelParser::LiteralExprContext* context) override;
+
+        antlrcpp::Any visitFloatLiteral(antlrcpptest::SentinelParser::FloatLiteralContext* context) override;
+
+        antlrcpp::Any visitIntLiteral(antlrcpptest::SentinelParser::IntLiteralContext* context) override;
 
         // public AstNode visitParensExpr(SentinelParser.ParensExprContext context) {
         //         return visit(context.expr());

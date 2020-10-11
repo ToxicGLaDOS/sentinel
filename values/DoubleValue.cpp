@@ -16,3 +16,11 @@ std::shared_ptr<SentinelValue> DoubleValue::add(const SentinelValue& other) cons
 std::shared_ptr<SentinelValue> DoubleValue::add(const DoubleValue& other) const{
     return std::make_shared<DoubleValue>(value + other.value);
 }
+
+std::shared_ptr<SentinelValue> DoubleValue::add(const IntValue& other) const{
+    return std::make_shared<DoubleValue>(value + other.value);
+}
+
+std::string DoubleValue::toString() const {
+    return std::to_string(value);
+}

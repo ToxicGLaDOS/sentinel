@@ -1,17 +1,16 @@
 #pragma once
 #include "SentinelValue.h"
-#include "IntValue.h"
+#include "DoubleValue.h"
 
-class IntValue;
+class DoubleValue;
 
-class DoubleValue : public SentinelValue {
+class IntValue : public SentinelValue {
     public:
-        double value;
+        int value;
 
-        DoubleValue(double value);
+        IntValue(int value);
         virtual std::shared_ptr<SentinelValue> add(const SentinelValue& other) const;
-        std::shared_ptr<SentinelValue> add(const DoubleValue& other) const;
         std::shared_ptr<SentinelValue> add(const IntValue& other) const;
-
+        std::shared_ptr<SentinelValue> add(const DoubleValue& other) const;
         std::string toString() const;
 };

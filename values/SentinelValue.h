@@ -12,9 +12,11 @@ class SentinelValue {
         // This is used instead of operator overloading because operators cannot be polymorphic
         virtual std::shared_ptr<SentinelValue> add(const SentinelValue& other) const = 0;
 
+
         bool isNumber() const;
         bool isDouble() const;
         bool isInt() const;
 
+        virtual std::string toString() const = 0;
 
 };

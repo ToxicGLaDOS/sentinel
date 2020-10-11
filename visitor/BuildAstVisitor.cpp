@@ -20,19 +20,34 @@ antlrcpp::Any BuildAstVisitor::visitVariableDeclStatement(antlrcpptest::Sentinel
     return visit(context->expression);
 }
 
-antlrcpp::Any BuildAstVisitor::visitNumberExpr(antlrcpptest::SentinelParser::NumberExprContext* context) {
-    auto number = std::make_shared<DoubleValue>(stod(context->value->getText()));
+antlrcpp::Any BuildAstVisitor::visitLiteralExpr(antlrcpptest::SentinelParser::LiteralExprContext* context) {
+    if(context->literal()->children.size() < 1){
+        throw std::runtime_error("literal expression with no children?");
+    }
+    return visit(context->literal()->children[0]);
+    //std::cout << context->literal()->children[0]->getText() << std::endl;
+    //auto number = std::make_shared<DoubleValue>(stod(context->value->getText()));
+    //return std::dynamic_pointer_cast<SentinelValue>(number);
+}
+
+antlrcpp::Any BuildAstVisitor::visitFloatLiteral(antlrcpptest::SentinelParser::FloatLiteralContext* context) {
+    auto number = std::make_shared<DoubleValue>(stod(context->FLOAT()->getText()));
+    return std::dynamic_pointer_cast<SentinelValue>(number);
+}
+
+antlrcpp::Any BuildAstVisitor::visitIntLiteral(antlrcpptest::SentinelParser::IntLiteralContext* context) {
+    auto number = std::make_shared<IntValue>(stoi(context->INT()->getText()));
     return std::dynamic_pointer_cast<SentinelValue>(number);
 }
 
 antlrcpp::Any BuildAstVisitor::visitInfixExpr(antlrcpptest::SentinelParser::InfixExprContext* context){
-    std::shared_ptr<SentinelValue> valueWrapper;
+    std::shared_ptr<SentinelValue> value;
     auto left = visit(context->left).as<std::shared_ptr<SentinelValue>>();
     auto right = visit(context->right).as<std::shared_ptr<SentinelValue>>();
 
     switch (context->op->getType()) {
         case antlrcpptest::SentinelParser::OP_ADD:
-            valueWrapper = left->add(*right);
+            value = left->add(*right);
             break;
 
         //case antlrcpptest::SentinelParser::OP_SUB:
@@ -50,8 +65,8 @@ antlrcpp::Any BuildAstVisitor::visitInfixExpr(antlrcpptest::SentinelParser::Infi
         default:
             throw std::runtime_error("Infix expression with operator that isn't *,-,+,/ found :(");
     }
-    std::cout << "Hey I just did an addition the result was: " <<  std::dynamic_pointer_cast<DoubleValue>(valueWrapper)->value << std::endl;
-    return valueWrapper;
+    std::cout << "Hey I just did an addition the result was: " <<  value->toString() << std::endl;
+    return value;
 }
 
 // antlrcpp::Any BuildAstVisitor::visitUnaryExpr(antlrcpptest::SentinelParser::UnaryExprContext* context){

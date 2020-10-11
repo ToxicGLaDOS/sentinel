@@ -18,7 +18,7 @@ expr
     |   op=('+'|'-') expr                    # unaryExpr
     |   left=expr op=('*'|'/') right=expr    # infixExpr
     |   left=expr op=('+'|'-') right=expr    # infixExpr
-    |   value=LITERAL                            # numberExpr
+    |   value=literal                        # literalExpr
     ;
 
 OP_ADD: '+';
@@ -33,13 +33,17 @@ LEFT_BRACKET: '{';
 RIGHT_BRACKET: '}';
 COMMA: ',';
 
-LITERAL : INT_LITERAL | FLOAT_LITERAL | STRING_LITERAL;
-NUM : INT_LITERAL | FLOAT_LITERAL;
+literal : intLiteral | floatLiteral | stringLiteral;
+num : intLiteral | floatLiteral;
+intLiteral: INT;
+floatLiteral : FLOAT;
+stringLiteral : '"' .*? '"';
+
 ID  :   [a-zA-Z_]+[a-zA-Z0-9_]*;
-WATCHABLE_ID : ID ('[' (STRING_LITERAL | INT_LITERAL | FLOAT_LITERAL | ID ) ']' )?;
-fragment INT_LITERAL : [0-9]+;
-fragment FLOAT_LITERAL :   [0-9]+ '.' [0-9]+ ([eE] [+-]? [0-9]+)?;
-fragment STRING_LITERAL : '"' .*? '"';
+watchable_id : ID ('[' (stringLiteral | intLiteral | floatLiteral | ID ) ']' )?;
+
+INT : [0-9]+;
+FLOAT: [0-9]+ '.' [0-9]+ ([eE] [+-]? [0-9]+)?;
 
 
 WS  :   [ \t\r\n] -> channel(HIDDEN);
