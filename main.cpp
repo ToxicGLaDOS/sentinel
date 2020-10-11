@@ -19,7 +19,6 @@
 
 #include "BuildAstVisitor.h"
 
-
 using namespace antlrcpptest;
 using namespace antlr4;
 
@@ -42,7 +41,6 @@ int main(int , const char **) {
   BuildAstVisitor ast;
   ast.visitProgram(cst);
   std::cout << "Done" << std::endl;
-  //EvaluateProgramVisitor program(ast);
 
   // std::cout << tree->toStringTree(&parser) << std::endl << std::endl;
 

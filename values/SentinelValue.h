@@ -1,15 +1,20 @@
 #pragma once
 #include <variant>
+#include <memory>
 
 class SentinelValue {
-    // Alias SentinelType to basically the union of all the valid internal types
-    using SentinelType = std::variant<double>;
     public:
-        enum types {DOUBLE};
+        enum types {DOUBLE, INT};
         SentinelValue::types type;
-        SentinelType value;
 
-        SentinelValue(SentinelValue::types type, SentinelType value);
+        SentinelValue(SentinelValue::types type);
+
+        // This is used instead of operator overloading because operators cannot be polymorphic
+        virtual std::shared_ptr<SentinelValue> add(const SentinelValue& other) const = 0;
+
+        bool isNumber() const;
+        bool isDouble() const;
+        bool isInt() const;
 
 
 };

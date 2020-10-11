@@ -34,7 +34,8 @@ list(APPEND visitors
     )
 
 list(APPEND values
-    values/SentinelValue.cpp)
+    values/SentinelValue.cpp
+    values/DoubleValue.cpp)
 
 add_executable(demo main.cpp
                ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}

@@ -1,5 +1,6 @@
 #include "BuildAstVisitor.h"
 #include "SentinelValue.h"
+#include "DoubleValue.h"
 #include <memory>
 
 antlrcpp::Any BuildAstVisitor::visitProgram(antlrcpptest::SentinelParser::ProgramContext* context) {
@@ -20,25 +21,18 @@ antlrcpp::Any BuildAstVisitor::visitVariableDeclStatement(antlrcpptest::Sentinel
 }
 
 antlrcpp::Any BuildAstVisitor::visitNumberExpr(antlrcpptest::SentinelParser::NumberExprContext* context) {
-    auto number = std::make_shared<SentinelValue>(SentinelValue::DOUBLE, stod(context->value->getText()));
+    auto number = std::make_shared<DoubleValue>(stod(context->value->getText()));
     return std::dynamic_pointer_cast<SentinelValue>(number);
 }
 
 antlrcpp::Any BuildAstVisitor::visitInfixExpr(antlrcpptest::SentinelParser::InfixExprContext* context){
-    std::shared_ptr<SentinelValue> value;
+    std::shared_ptr<SentinelValue> valueWrapper;
     auto left = visit(context->left).as<std::shared_ptr<SentinelValue>>();
     auto right = visit(context->right).as<std::shared_ptr<SentinelValue>>();
 
-    // Here we'd do some typechecking to see _if_ it is a double (or int, string, etc...) and then cast it.
-    auto leftValue = std::get<double>(left->value);
-    auto rightValue = std::get<double>(right->value);
-
     switch (context->op->getType()) {
         case antlrcpptest::SentinelParser::OP_ADD:
-            value = std::dynamic_pointer_cast<SentinelValue>(
-                        // The type of the result is the same as the left's type (this is bad and should change eventually)
-                        std::make_shared<SentinelValue>(left->type, leftValue + rightValue)
-                        );
+            valueWrapper = left->add(*right);
             break;
 
         //case antlrcpptest::SentinelParser::OP_SUB:
@@ -56,8 +50,8 @@ antlrcpp::Any BuildAstVisitor::visitInfixExpr(antlrcpptest::SentinelParser::Infi
         default:
             throw std::runtime_error("Infix expression with operator that isn't *,-,+,/ found :(");
     }
-    std::cout << "Hey I just did an addition the result was: " << std::get<double>(value->value) << std::endl;
-    return value;
+    std::cout << "Hey I just did an addition the result was: " <<  std::dynamic_pointer_cast<DoubleValue>(valueWrapper)->value << std::endl;
+    return valueWrapper;
 }
 
 // antlrcpp::Any BuildAstVisitor::visitUnaryExpr(antlrcpptest::SentinelParser::UnaryExprContext* context){
