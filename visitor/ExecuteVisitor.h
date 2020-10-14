@@ -55,5 +55,8 @@ class ExecuteVisitor : public antlrcpptest::SentinelBaseVisitor {
 
         antlrcpp::Any visitInfixExpr(antlrcpptest::SentinelParser::InfixExprContext* context) override;
 
+        antlrcpp::Any visitVariableExpr(antlrcpptest::SentinelParser::VariableExprContext* context) override;
+
+
         //antlrcpp::Any visitUnaryExpr(antlrcpptest::SentinelParser::UnaryExprContext* context) override;
 };

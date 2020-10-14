@@ -19,6 +19,7 @@ expr
     |   left=expr op=('*'|'/') right=expr    # infixExpr
     |   left=expr op=('+'|'-') right=expr    # infixExpr
     |   value=literal                        # literalExpr
+    |   variable=ID                          # variableExpr
     ;
 
 OP_ADD: '+';

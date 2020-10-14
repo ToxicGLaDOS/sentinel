@@ -85,6 +85,11 @@ antlrcpp::Any ExecuteVisitor::visitInfixExpr(antlrcpptest::SentinelParser::Infix
     return value;
 }
 
+antlrcpp::Any ExecuteVisitor::visitVariableExpr(antlrcpptest::SentinelParser::VariableExprContext* context) {
+    return scope.getValue(context->variable->getText());
+}
+
+
 // antlrcpp::Any ExecuteVisitor::visitUnaryExpr(antlrcpptest::SentinelParser::UnaryExprContext* context){
 //     std::cout << "Unary expr" << std::endl;
 //     switch (context->op->getType()) {

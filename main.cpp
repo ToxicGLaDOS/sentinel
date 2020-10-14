@@ -42,7 +42,7 @@ int main(int , const char **) {
   ExecuteVisitor ast;
   ast.visitProgram(cst);
   std::cout << "Done" << std::endl;
-  std::cout << std::dynamic_pointer_cast<IntValue>(ast.scope.getValue("i"))->value <<  std::endl;
+  // std::cout << std::dynamic_pointer_cast<IntValue>(ast.scope.getValue("b"))->value <<  std::endl;
   // std::cout << tree->toStringTree(&parser) << std::endl << std::endl;
 
   return 0;

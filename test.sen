@@ -1,1 +1,2 @@
 double i = 4 + 72 + 6
+int b = i + 1
