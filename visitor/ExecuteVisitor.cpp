@@ -12,7 +12,7 @@
 
 ExecuteVisitor::ExecuteVisitor(){}
 
-ExecuteVisitor::ExecuteVisitor(Scope scope)
+ExecuteVisitor::ExecuteVisitor(const Scope& scope)
     : scope(scope){}
 
 /*
@@ -33,7 +33,6 @@ antlrcpp::Any ExecuteVisitor::visitEqualStatement(antlrcpptest::SentinelParser::
 }
 
 antlrcpp::Any ExecuteVisitor::visitVariableDeclStatement(antlrcpptest::SentinelParser::VariableDeclStatementContext* context){
-    // Here we probably add the variable to the symbol table
     std::shared_ptr<SentinelValue> value = visit(context->expression);
     scope.setValue(context->varName->getText(), value);
     return nullptr;
@@ -47,13 +46,13 @@ antlrcpp::Any ExecuteVisitor::visitLiteralExpr(antlrcpptest::SentinelParser::Lit
 }
 
 antlrcpp::Any ExecuteVisitor::visitFloatLiteral(antlrcpptest::SentinelParser::FloatLiteralContext* context) {
-    auto number = std::make_shared<DoubleValue>(stod(context->FLOAT()->getText()));
-    return std::dynamic_pointer_cast<SentinelValue>(number);
+    std::shared_ptr<SentinelValue> number = std::make_shared<DoubleValue>(stod(context->FLOAT()->getText()));
+    return number;
 }
 
 antlrcpp::Any ExecuteVisitor::visitIntLiteral(antlrcpptest::SentinelParser::IntLiteralContext* context) {
-    auto number = std::make_shared<IntValue>(stoi(context->INT()->getText()));
-    return std::dynamic_pointer_cast<SentinelValue>(number);
+    std::shared_ptr<SentinelValue> number = std::make_shared<IntValue>(stoi(context->INT()->getText()));
+    return number;
 }
 
 antlrcpp::Any ExecuteVisitor::visitInfixExpr(antlrcpptest::SentinelParser::InfixExprContext* context){

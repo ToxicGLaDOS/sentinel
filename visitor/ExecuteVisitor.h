@@ -19,7 +19,7 @@ class ExecuteVisitor : public antlrcpptest::SentinelBaseVisitor {
     public:
         Scope scope;
         ExecuteVisitor();
-        ExecuteVisitor(Scope scope);
+        ExecuteVisitor(const Scope& scope);
         antlrcpp::Any visitProgram(antlrcpptest::SentinelParser::ProgramContext* context) override;
 
         // public AstNode visitTwoParamWatcherDef(SentinelParser.TwoParamWatcherDefContext context){

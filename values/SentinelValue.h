@@ -13,7 +13,6 @@
 */
 
 #pragma once
-#include <variant>
 #include <memory>
 
 class SentinelValue {
@@ -23,7 +22,11 @@ class SentinelValue {
 
         SentinelValue(SentinelValue::types type);
 
-        // This is used instead of operator overloading because operators cannot be polymorphic
+        /*
+         * These pure virtual methods are used instead of operator overloading because operators cannot be polymorphic.
+         *
+         * We return a pointer because SentinelValue has pure virtual methods so it can't be instantiated.
+        */
         virtual std::shared_ptr<SentinelValue> add(const SentinelValue& other) const = 0;
 
 

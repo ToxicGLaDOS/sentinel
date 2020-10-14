@@ -42,10 +42,10 @@ list(APPEND values
     values/IntValue.cpp)
 
 
-add_executable(demo main.cpp
+add_executable(sentinel main.cpp
                ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}
                ${visitors}
                ${values}
                ${scope})
 
-target_link_libraries(demo antlr4_static)
+target_link_libraries(sentinel antlr4_static)
