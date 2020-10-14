@@ -13,9 +13,13 @@
 
 #include "SentinelBaseVisitor.h"
 #include "SentinelParser.h"
+#include "Scope.h"
 
 class ExecuteVisitor : public antlrcpptest::SentinelBaseVisitor {
     public:
+        Scope scope;
+        ExecuteVisitor();
+        ExecuteVisitor(Scope scope);
         antlrcpp::Any visitProgram(antlrcpptest::SentinelParser::ProgramContext* context) override;
 
         // public AstNode visitTwoParamWatcherDef(SentinelParser.TwoParamWatcherDefContext context){

@@ -10,6 +10,11 @@
 #include <memory>
 
 
+ExecuteVisitor::ExecuteVisitor(){}
+
+ExecuteVisitor::ExecuteVisitor(Scope scope)
+    : scope(scope){}
+
 /*
  * This is the only method that should be called from outside this class.
 */
@@ -22,12 +27,16 @@ antlrcpp::Any ExecuteVisitor::visitProgram(antlrcpptest::SentinelParser::Program
 }
 
 antlrcpp::Any ExecuteVisitor::visitEqualStatement(antlrcpptest::SentinelParser::EqualStatementContext *context){
-    return visit(context->expression);
+    std::shared_ptr<SentinelValue> value = visit(context->expression);
+    scope.setValue(context->varName->getText(), value);
+    return nullptr;
 }
 
 antlrcpp::Any ExecuteVisitor::visitVariableDeclStatement(antlrcpptest::SentinelParser::VariableDeclStatementContext* context){
     // Here we probably add the variable to the symbol table
-    return visit(context->expression);
+    std::shared_ptr<SentinelValue> value = visit(context->expression);
+    scope.setValue(context->varName->getText(), value);
+    return nullptr;
 }
 
 antlrcpp::Any ExecuteVisitor::visitLiteralExpr(antlrcpptest::SentinelParser::LiteralExprContext* context) {

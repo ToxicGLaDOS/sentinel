@@ -6,11 +6,11 @@ program
 
 statement
     : watcherName=ID LEFT_PAREN type=ID varName0=ID COMMA type=ID varName1=ID RIGHT_PAREN LEFT_BRACKET statement* RIGHT_BRACKET # twoParamWatcherDef
-    //| ID '(' ID ID ')' '{' statement* '}'                                               # oneParamWatcherDef
-    | watcherName=ID WATCHES watchable=ID                                                         # watchesDeclStatement
-    //| 'if' '(' expr ')' '{' statement* '}'                                            # ifStatement
-    | varName=ID EQUALS expression=expr                                                    # equalStatement
-    | typeName=ID varName=ID EQUALS expression=expr                                                           # variableDeclStatement
+    //| ID '(' ID ID ')' '{' statement* '}'                                                                                     # oneParamWatcherDef
+    | watcherName=ID WATCHES watchable=ID                                                                                       # watchesDeclStatement
+    //| 'if' '(' expr ')' '{' statement* '}'                                                                                    # ifStatement
+    | varName=ID EQUALS expression=expr                                                                                         # equalStatement
+    | typeName=ID varName=ID EQUALS expression=expr                                                                             # variableDeclStatement
     ;
 
 expr

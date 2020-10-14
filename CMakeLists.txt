@@ -27,11 +27,14 @@ antlr_target(SampleGrammarParser Sentinel.g4 VISITOR
              PACKAGE antlrcpptest)
 
 include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
-include_directories(visitor values)
+include_directories(visitor scope values)
 
 list(APPEND visitors 
     visitor/ExecuteVisitor.cpp
     )
+
+list(APPEND scope
+    scope/Scope.cpp)
 
 list(APPEND values
     values/SentinelValue.cpp
@@ -42,6 +45,7 @@ list(APPEND values
 add_executable(demo main.cpp
                ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}
                ${visitors}
-               ${values})
+               ${values}
+               ${scope})
 
 target_link_libraries(demo antlr4_static)
