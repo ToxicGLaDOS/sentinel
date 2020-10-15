@@ -14,12 +14,13 @@
 #include "SentinelBaseVisitor.h"
 #include "SentinelParser.h"
 #include "Scope.h"
+#include <memory>
 
 class ExecuteVisitor : public antlrcpptest::SentinelBaseVisitor {
     public:
-        Scope scope;
+        std::shared_ptr<Scope> scope;
         ExecuteVisitor();
-        ExecuteVisitor(const Scope& scope);
+        ExecuteVisitor(std::shared_ptr<Scope> scope);
         antlrcpp::Any visitProgram(antlrcpptest::SentinelParser::ProgramContext* context) override;
 
         // public AstNode visitTwoParamWatcherDef(SentinelParser.TwoParamWatcherDefContext context){
@@ -57,6 +58,9 @@ class ExecuteVisitor : public antlrcpptest::SentinelBaseVisitor {
 
         antlrcpp::Any visitVariableExpr(antlrcpptest::SentinelParser::VariableExprContext* context) override;
 
+        antlrcpp::Any visitTwoParamWatcherDef(antlrcpptest::SentinelParser::TwoParamWatcherDefContext* context) override;
+    
+        antlrcpp::Any visitWatchesDeclStatement(antlrcpptest::SentinelParser::WatchesDeclStatementContext* context) override;
 
         //antlrcpp::Any visitUnaryExpr(antlrcpptest::SentinelParser::UnaryExprContext* context) override;
 };

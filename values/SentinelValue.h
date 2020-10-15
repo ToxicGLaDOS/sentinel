@@ -14,14 +14,20 @@
 
 #pragma once
 #include <memory>
+#include <vector>
+#include "SentinelParser.h"
+#include "Scope.h"
+
+class Scope;
 
 class SentinelValue {
     public:
         enum types {DOUBLE, INT};
         SentinelValue::types type;
+        std::vector<antlrcpptest::SentinelParser::TwoParamWatcherDefContext*> watchers;
 
         SentinelValue(SentinelValue::types type);
-
+        
         /*
          * These pure virtual methods are used instead of operator overloading because operators cannot be polymorphic.
          *
@@ -29,6 +35,9 @@ class SentinelValue {
         */
         virtual std::shared_ptr<SentinelValue> add(const SentinelValue& other) const = 0;
 
+
+        void addWatcher(antlrcpptest::SentinelParser::TwoParamWatcherDefContext* watcher);
+        void callWatchers(std::shared_ptr<Scope> parentScope);
 
         bool isNumber() const;
         bool isDouble() const;

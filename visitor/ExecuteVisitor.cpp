@@ -10,9 +10,10 @@
 #include <memory>
 
 
-ExecuteVisitor::ExecuteVisitor(){}
+ExecuteVisitor::ExecuteVisitor()
+    : scope(std::make_shared<Scope>()){}
 
-ExecuteVisitor::ExecuteVisitor(const Scope& scope)
+ExecuteVisitor::ExecuteVisitor(std::shared_ptr<Scope> scope)
     : scope(scope){}
 
 /*
@@ -28,13 +29,13 @@ antlrcpp::Any ExecuteVisitor::visitProgram(antlrcpptest::SentinelParser::Program
 
 antlrcpp::Any ExecuteVisitor::visitEqualStatement(antlrcpptest::SentinelParser::EqualStatementContext *context){
     std::shared_ptr<SentinelValue> value = visit(context->expression);
-    scope.setValue(context->varName->getText(), value);
+    scope->setValue(context->varName->getText(), value);
     return nullptr;
 }
 
 antlrcpp::Any ExecuteVisitor::visitVariableDeclStatement(antlrcpptest::SentinelParser::VariableDeclStatementContext* context){
     std::shared_ptr<SentinelValue> value = visit(context->expression);
-    scope.setValue(context->varName->getText(), value);
+    scope->setValue(context->varName->getText(), value);
     return nullptr;
 }
 
@@ -85,7 +86,17 @@ antlrcpp::Any ExecuteVisitor::visitInfixExpr(antlrcpptest::SentinelParser::Infix
 }
 
 antlrcpp::Any ExecuteVisitor::visitVariableExpr(antlrcpptest::SentinelParser::VariableExprContext* context) {
-    return scope.getValue(context->variable->getText());
+    return scope->getValue(context->variable->getText());
+}
+
+antlrcpp::Any ExecuteVisitor::visitTwoParamWatcherDef(antlrcpptest::SentinelParser::TwoParamWatcherDefContext* context) {
+    scope->defineWatcher(context->watcherName->getText(), context);
+    return nullptr;
+}
+
+antlrcpp::Any ExecuteVisitor::visitWatchesDeclStatement(antlrcpptest::SentinelParser::WatchesDeclStatementContext* context) {
+    scope->addWatcherToVariable(context->watcherName->getText(), context->watchable->getText());
+    return nullptr;
 }
 
 

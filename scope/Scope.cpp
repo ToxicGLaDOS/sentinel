@@ -32,6 +32,28 @@ std::shared_ptr<SentinelValue> Scope::getValue(const std::string& varName) const
 }
 
 void Scope::setValue(std::string varName, std::shared_ptr<SentinelValue> value){
+    // If the variable already exists
+    if (variables.find(varName) != variables.end()){
+        // shared_from_this is inherited from std::enable_shared_from_this
+        // and allows us to generate smart pointers as this pointers
+        variables[varName]->callWatchers(shared_from_this());
+    }
     variables.emplace(varName, value);
 }
 
+
+void Scope::defineWatcher(const std::string& watcherName, antlrcpptest::SentinelParser::TwoParamWatcherDefContext* contextTree){
+    watchers.emplace(watcherName, contextTree);
+}
+
+void Scope::addWatcherToVariable(const std::string& watcherName, const std::string& variableName){
+    if (variables.find(variableName) == variables.end()){
+        throw std::runtime_error("Tried to watch an undefined variable.");
+    }
+    if (watchers.find(watcherName) == watchers.end()){
+        throw std::runtime_error("Tried to watch with an undefined watcher.");
+    }
+    auto value = variables[variableName];
+    auto watcher = watchers[watcherName];
+    value->addWatcher(watcher);
+}

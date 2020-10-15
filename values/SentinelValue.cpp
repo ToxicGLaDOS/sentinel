@@ -6,11 +6,21 @@
 
 #include "SentinelValue.h"
 #include <iostream>
-#include <variant>
+#include "ExecuteVisitor.h"
 
 SentinelValue::SentinelValue(SentinelValue::types type)
     : type(type){}
 
+void SentinelValue::addWatcher(antlrcpptest::SentinelParser::TwoParamWatcherDefContext* watcher) {
+    watchers.push_back(watcher);
+}
+
+void SentinelValue::callWatchers(std::shared_ptr<Scope> parentScope) {
+    ExecuteVisitor executeVisitor(parentScope);
+    for(auto context : watchers){
+        executeVisitor.visitChildren(context);
+    }
+}
 
 bool SentinelValue::isDouble() const{
     return type == SentinelValue::DOUBLE;

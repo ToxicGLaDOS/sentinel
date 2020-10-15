@@ -1,2 +1,11 @@
-double i = 4 + 72 + 6
-int b = i + 1
+myWatcher( int i, int j) {
+    int c = 1 + 1 + 1 + 1
+}
+
+int i = 5 + 5
+
+myWatcher watches i
+
+i = 10 + 10
+
+i = 20 + 20
